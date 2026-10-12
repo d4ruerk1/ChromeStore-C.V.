@@ -1,0 +1,38 @@
+{
+ "extName": {
+  "message": "C.V."
+ },
+ "extDescription": {
+  "message": "Contrôlez le volume de l'onglet (amplification jusqu'à 300 %) et la vitesse des vidéos. Privée, légère, aucune donnée collectée."
+ },
+ "volume": {
+  "message": "Volume"
+ },
+ "speed": {
+  "message": "Vitesse"
+ },
+ "reset": {
+  "message": "Réinitialiser"
+ },
+ "mute": {
+  "message": "Muet"
+ },
+ "boostWarning": {
+  "message": "Au-delà de 100 %, le son peut saturer. Gardez un volume sûr pour protéger votre audition."
+ },
+ "noMedia": {
+  "message": "Aucun audio ni vidéo trouvé sur cette page."
+ },
+ "speedError": {
+  "message": "Impossible de modifier la vitesse sur cette page."
+ },
+ "captureError": {
+  "message": "Impossible de contrôler le son de cet onglet. Essayez de recharger la page."
+ },
+ "restricted": {
+  "message": "C.V. ne fonctionne pas sur les pages du navigateur ni dans la boutique d'extensions."
+ },
+ "privacy": {
+  "message": "Aucune donnée collectée · tout reste sur votre appareil"
+ }
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header>
+  <img src="icons/icon32.png" alt="" width="22" height="22">
+  <h1>C.V.</h1>
+  <button id="reset" class="ghost" type="button" data-i18n="reset"></button>
+</header>
+<p id="restricted" class="note" role="status" hidden data-i18n="restricted"></p>
+<main id="main">
+  <section aria-labelledby="volT">
+    <div class="row"><h2 id="volT" data-i18n="volume"></h2><output id="volOut" for="vol">100%</output></div>
+    <input type="range" id="vol" min="0" max="300" step="1" value="100" aria-labelledby="volT">
+    <div class="ticks" aria-hidden="true"><span style="--f:0">0</span><span style="--f:.3333">100</span><span style="--f:.6667">200</span><span style="--f:1">300</span></div>
+    <div class="chips" id="volChips">
+      <button type="button" data-v="0" data-i18n="mute"></button>
+      <button type="button" data-v="50">50%</button>
+      <button type="button" data-v="100">100%</button>
+      <button type="button" data-v="150">150%</button>
+      <button type="button" data-v="200">200%</button>
+      <button type="button" data-v="300">300%</button>
+    </div>
+    <p id="volNote" class="note" role="status" hidden></p>
+  </section>
+  <section aria-labelledby="spdT">
+    <div class="row"><h2 id="spdT" data-i18n="speed"></h2><output id="spdOut" for="spd">1×</output></div>
+    <div class="chips" id="spdChips">
+      <button type="button" data-v="50">0.5×</button>
+      <button type="button" data-v="100">1×</button>
+      <button type="button" data-v="125">1.25×</button>
+      <button type="button" data-v="150">1.5×</button>
+      <button type="button" data-v="200">2×</button>
+      <button type="button" data-v="300">3×</button>
+    </div>
+    <input type="range" id="spd" min="10" max="400" step="5" value="100" aria-labelledby="spdT">
+    <p id="spdNote" class="note" role="status" hidden></p>
+  </section>
+</main>
+<footer data-i18n="privacy"></footer>
+<script src="popup.js"></script>
+</body>
+</html>

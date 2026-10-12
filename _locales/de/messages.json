@@ -1,0 +1,38 @@
+{
+ "extName": {
+  "message": "C.V."
+ },
+ "extDescription": {
+  "message": "Steuere die Tab-Lautstärke (Boost bis 300 %) und die Videogeschwindigkeit. Privat, leicht, keine Datenerfassung."
+ },
+ "volume": {
+  "message": "Lautstärke"
+ },
+ "speed": {
+  "message": "Tempo"
+ },
+ "reset": {
+  "message": "Zurücksetzen"
+ },
+ "mute": {
+  "message": "Stumm"
+ },
+ "boostWarning": {
+  "message": "Über 100 % kann der Ton verzerren. Halte die Lautstärke auf einem sicheren Niveau, um dein Gehör zu schützen."
+ },
+ "noMedia": {
+  "message": "Kein Audio oder Video auf dieser Seite gefunden."
+ },
+ "speedError": {
+  "message": "Das Tempo kann auf dieser Seite nicht geändert werden."
+ },
+ "captureError": {
+  "message": "Audio dieses Tabs kann nicht gesteuert werden. Lade die Seite neu."
+ },
+ "restricted": {
+  "message": "C.V. funktioniert nicht auf Browserseiten oder im Erweiterungsstore."
+ },
+ "privacy": {
+  "message": "Keine Datenerfassung · alles bleibt auf deinem Gerät"
+ }
+}

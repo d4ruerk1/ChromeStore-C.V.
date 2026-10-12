@@ -1,0 +1,38 @@
+{
+ "extName": {
+  "message": "C.V."
+ },
+ "extDescription": {
+  "message": "Controlla il volume della scheda (boost fino al 300%) e la velocità dei video. Privata, leggera, nessun dato raccolto."
+ },
+ "volume": {
+  "message": "Volume"
+ },
+ "speed": {
+  "message": "Velocità"
+ },
+ "reset": {
+  "message": "Ripristina"
+ },
+ "mute": {
+  "message": "Muto"
+ },
+ "boostWarning": {
+  "message": "Sopra il 100% l'audio può distorcersi. Mantieni un volume sicuro per proteggere l'udito."
+ },
+ "noMedia": {
+  "message": "Nessun audio o video trovato in questa pagina."
+ },
+ "speedError": {
+  "message": "Impossibile cambiare la velocità in questa pagina."
+ },
+ "captureError": {
+  "message": "Impossibile controllare l'audio di questa scheda. Prova a ricaricare la pagina."
+ },
+ "restricted": {
+  "message": "C.V. non funziona sulle pagine del browser o nello store delle estensioni."
+ },
+ "privacy": {
+  "message": "Nessun dato raccolto · tutto resta sul tuo dispositivo"
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "extName": {
+  "message": "C.V."
+ },
+ "extDescription": {
+  "message": "Control tab volume (boost up to 300%) and video playback speed. Private, lightweight, no data collected."
+ },
+ "volume": {
+  "message": "Volume"
+ },
+ "speed": {
+  "message": "Speed"
+ },
+ "reset": {
+  "message": "Reset"
+ },
+ "mute": {
+  "message": "Mute"
+ },
+ "boostWarning": {
+  "message": "Above 100% audio may distort. Keep the volume at a safe level to protect your hearing."
+ },
+ "noMedia": {
+  "message": "No audio or video found on this page."
+ },
+ "speedError": {
+  "message": "Speed can't be changed on this page."
+ },
+ "captureError": {
+  "message": "Unable to control this tab's audio. Try reloading the page."
+ },
+ "restricted": {
+  "message": "C.V. can't run on browser pages or in the extension store."
+ },
+ "privacy": {
+  "message": "No data collected · everything stays on your device"
+ }
+}
