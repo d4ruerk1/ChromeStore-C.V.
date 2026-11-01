@@ -1,17 +1,38 @@
-# Informativa sulla privacy – C.V. / Privacy Policy
+# Privacy Policy & Legal Compliance / Informativa sulla Privacy
 
-Ultimo aggiornamento / Last updated: 14 ottobre 2026
+**Extension / Estensione**: C.V.  
+**Developer / Sviluppatore**: d4ruerk1  
+**Repository**: https://github.com/d4ruerk1/ChromeStore-C.V  
+**Last updated / Ultimo aggiornamento**: 2026-11-01  
 
-**IT** — C.V. non raccoglie, non memorizza su server, non vende e non condivide alcun dato personale (Reg. UE 2016/679 "GDPR", D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018, Direttiva 2002/58/CE "ePrivacy"). Nessun tracciamento, analytics, cookie o codice remoto; lo sviluppatore non ha server e non riceve nulla. L'audio della scheda viene elaborato solo localmente e in tempo reale per applicare il volume scelto, senza essere registrato né trasmesso. L'unico dato salvato è il livello di volume per scheda, in memoria temporanea del browser (`storage.session`), cancellato alla chiusura della scheda o del browser.
+---
 
-Poiché lo sviluppatore non tratta dati personali, non esiste un titolare del trattamento per questa estensione. Per cancellare ogni dato basta chiudere il browser o disinstallare l'estensione. Puoi comunque proporre reclamo al Garante per la protezione dei dati personali (garanteprivacy.it). Contatti: sezione Issues del repository GitHub `d4ruerk1/ChromeStore-C.V.`.
+### English Version
 
-**EN** — C.V. does not collect, transmit, sell or share any personal data. No tracking, analytics, cookies or remote code; the developer runs no server and receives nothing. Tab audio is processed locally in real time only to apply the chosen volume; it is never recorded or transmitted. The only stored value is the per-tab volume level in temporary browser memory (`storage.session`), cleared when the tab or browser closes. Contact: Issues on the GitHub repository `d4ruerk1/ChromeStore-C.V.`.
+#### 1. Compliance Statement
+C.V. complies fully with:
+- **General Data Protection Regulation (EU GDPR 2016/679)** (Data minimization, Privacy by Design, and Transparency).
+- **Italian Privacy Code (D.Lgs. 196/2003 as amended by D.Lgs. 101/2018)**.
+- **Google Chrome Web Store Developer Program Policies** (Single Purpose and Limited Use Requirements).
+- **Mozilla Add-on Policies (AMO)**.
+- **GitHub Terms of Service and Open Source Standards**.
 
-**Chrome Web Store** — The use of information received by this extension adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements.
+#### 2. Data Collection and Processing
+- **Zero Personal Data Collected**: C.V. does NOT collect, store, transmit, profile, or sell any personal data, browsing history, keystrokes, IP addresses, media content, or device identifiers.
+- **Local Audio Processing**: Audio capture via `chrome.tabCapture` is executed strictly in-memory on your local device using standard Web Audio API in an isolated offscreen document. No audio stream is ever recorded, stored to disk, or transmitted to any external server.
+- **User Preferences**: User preferences (such as playback rate and volume settings) are stored locally in the browser's sandboxed storage (`chrome.storage.local` and `chrome.storage.session`).
+- **External Connections**: When update notifications are enabled, the extension optionally queries GitHub's public API (`api.github.com`) solely to check the latest published version tag. No user data is transmitted.
+- **Third-Party Services**: External links (such as Ko-fi for donations or GitHub for source code) only open when explicitly initiated by the user.
 
-## Permessi / Permissions
-- `activeTab` – agisce solo sulla scheda in cui apri C.V. / acts only on the tab where you open C.V.
-- `scripting` – imposta la velocità dei video su richiesta / sets video speed on demand.
-- `tabCapture` + `offscreen` – necessari per il volume e il boost oltre il 100%; l'audio resta sul dispositivo / needed for volume and boost above 100%; audio never leaves the device.
-- `storage` – ricorda il volume della scheda (solo in sessione) / remembers tab volume (session only).
+---
+
+### Versione Italiana (Informativa Privacy ai sensi del GDPR e D.Lgs. 196/2003)
+
+#### 1. Principi di Trattamento e Conformità Normativa
+L'estensione C.V. è progettata e realizzata secondo il principio di **Privacy by Design e Privacy by Default** (art. 25 GDPR). È pienamente conforme al Regolamento Generale sulla Protezione dei Dati (UE 2016/679 - GDPR) e al Codice in materia di protezione dei dati personali (D.Lgs. 196/2003 e D.Lgs. 101/2018).
+
+#### 2. Assenza di Raccolta Dati Personali
+- **Nessuna Raccolta Dati**: L'estensione non raccoglie, non monitora, non profila e non trasferisce alcun dato personale o cronologia di navigazione.
+- **Elaborazione Audio Locale**: La cattura dell'audio della scheda avviene esclusivamente nella memoria volatile del dispositivo mediante le API Web Audio standard. Nessun flusso audio viene registrato, salvato o trasmesso.
+- **Archiviazione Locale**: Le impostazioni dell'utente (livello del volume, velocità preferita, opzioni di notifica) risiedono unicamente nello spazio protetto locale del browser (`chrome.storage`).
+- **Verifica Aggiornamenti Facoltativa**: Qualora l'opzione notifiche aggiornamenti sia attiva, l'estensione interroga le API pubbliche di GitHub esclusivamente per confrontare il numero di versione del software.

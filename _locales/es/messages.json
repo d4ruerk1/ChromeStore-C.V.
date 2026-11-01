@@ -1,38 +1,56 @@
 {
- "extName": {
-  "message": "C.V."
- },
- "extDescription": {
-  "message": "Controla el volumen de la pestaña (refuerzo hasta 300%) y la velocidad de los vídeos. Privada, ligera, sin recopilar datos."
- },
- "volume": {
-  "message": "Volumen"
- },
- "speed": {
-  "message": "Velocidad"
- },
- "reset": {
-  "message": "Restablecer"
- },
- "mute": {
-  "message": "Silenciar"
- },
- "boostWarning": {
-  "message": "Por encima del 100% el audio puede distorsionarse. Mantén un volumen seguro para proteger tu audición."
- },
- "noMedia": {
-  "message": "No se encontró audio ni vídeo en esta página."
- },
- "speedError": {
-  "message": "No se puede cambiar la velocidad en esta página."
- },
- "captureError": {
-  "message": "No se puede controlar el audio de esta pestaña. Prueba a recargar la página."
- },
- "restricted": {
-  "message": "C.V. no funciona en páginas del navegador ni en la tienda de extensiones."
- },
- "privacy": {
-  "message": "Sin recopilación de datos · todo queda en tu dispositivo"
- }
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "Refuerzo de volumen hasta 500% y velocidad de vídeo."
+  },
+  "volume": {
+    "message": "Volumen"
+  },
+  "speed": {
+    "message": "Velocidad"
+  },
+  "reset": {
+    "message": "Restablecer"
+  },
+  "mute": {
+    "message": "Silenciar"
+  },
+  "boostWarning": {
+    "message": "Volumen > 100%: el audio puede distorsionar."
+  },
+  "noMedia": {
+    "message": "No se encontró audio ni vídeo en esta página."
+  },
+  "speedError": {
+    "message": "No se puede cambiar la velocidad en esta página."
+  },
+  "captureError": {
+    "message": "No se puede controlar el audio de esta pestaña. Prueba a recargar la página."
+  },
+  "restricted": {
+    "message": "C.V. no funciona en páginas internas del navegador ni en la tienda de extensiones."
+  },
+  "settingsTitle": {
+    "message": "Configuración"
+  },
+  "settingRemember": {
+    "message": "Recordar volumen por pestaña"
+  },
+  "settingRememberDesc": {
+    "message": "Mantiene el nivel de volumen al navegar entre páginas"
+  },
+  "settingUpdate": {
+    "message": "Notificaciones de actualización"
+  },
+  "donateText": {
+    "message": "Invita a un café al desarrollador"
+  },
+  "legalNotice": {
+    "message": "Cumple con el RGPD (UE) y las leyes de privacidad italianas. Cero recopilación de datos, 100% local."
+  },
+  "updateAvailable": {
+    "message": "disponible!"
+  }
 }

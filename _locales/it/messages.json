@@ -1,38 +1,56 @@
 {
- "extName": {
-  "message": "C.V."
- },
- "extDescription": {
-  "message": "Controlla il volume della scheda (boost fino al 300%) e la velocità dei video. Privata, leggera, nessun dato raccolto."
- },
- "volume": {
-  "message": "Volume"
- },
- "speed": {
-  "message": "Velocità"
- },
- "reset": {
-  "message": "Ripristina"
- },
- "mute": {
-  "message": "Muto"
- },
- "boostWarning": {
-  "message": "Sopra il 100% l'audio può distorcersi. Mantieni un volume sicuro per proteggere l'udito."
- },
- "noMedia": {
-  "message": "Nessun audio o video trovato in questa pagina."
- },
- "speedError": {
-  "message": "Impossibile cambiare la velocità in questa pagina."
- },
- "captureError": {
-  "message": "Impossibile controllare l'audio di questa scheda. Prova a ricaricare la pagina."
- },
- "restricted": {
-  "message": "C.V. non funziona sulle pagine del browser o nello store delle estensioni."
- },
- "privacy": {
-  "message": "Nessun dato raccolto · tutto resta sul tuo dispositivo"
- }
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "Boost volume fino al 500% e controllo velocità video."
+  },
+  "volume": {
+    "message": "Volume"
+  },
+  "speed": {
+    "message": "Velocità"
+  },
+  "reset": {
+    "message": "Ripristina"
+  },
+  "mute": {
+    "message": "Muto"
+  },
+  "boostWarning": {
+    "message": "Volume > 100%: possibile distorsione audio."
+  },
+  "noMedia": {
+    "message": "Nessun audio o video trovato in questa pagina."
+  },
+  "speedError": {
+    "message": "Impossibile cambiare la velocità in questa pagina."
+  },
+  "captureError": {
+    "message": "Impossibile controllare l'audio di questa scheda. Prova a ricaricare la pagina."
+  },
+  "restricted": {
+    "message": "C.V. non funziona sulle pagine interne del browser o nello store delle estensioni."
+  },
+  "settingsTitle": {
+    "message": "Impostazioni"
+  },
+  "settingRemember": {
+    "message": "Ricorda volume per scheda"
+  },
+  "settingRememberDesc": {
+    "message": "Mantiene il livello di volume durante la navigazione"
+  },
+  "settingUpdate": {
+    "message": "Notifiche nuovi aggiornamenti"
+  },
+  "donateText": {
+    "message": "Offri un caffè allo sviluppatore"
+  },
+  "legalNotice": {
+    "message": "Conforme a GDPR (UE 2016/679) e D.Lgs. 196/2003 (Italia). Zero raccolta dati, 100% elaborazione locale."
+  },
+  "updateAvailable": {
+    "message": "disponibile!"
+  }
 }
