@@ -2,12 +2,13 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "short_name": "C.V.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "author": "d4ruerk1",
   "homepage_url": "https://github.com/d4ruerk1/ChromeStore-C.V",
   "permissions": [
+    "tabs",
     "activeTab",
     "scripting",
     "tabCapture",
@@ -15,8 +16,30 @@
     "storage"
   ],
   "host_permissions": [
-    "https://api.github.com/repos/d4ruerk1/ChromeStore-C.V/*"
+    "<all_urls>",
+    "*://*/*",
+    "https://api.github.com/*"
   ],
+  "commands": {
+    "volume-boost-down": {
+      "description": "__MSG_cmdVolumeBoostDown__"
+    },
+    "volume-boost-reset": {
+      "description": "__MSG_cmdVolumeBoostReset__"
+    },
+    "volume-boost-up": {
+      "description": "__MSG_cmdVolumeBoostUp__"
+    },
+    "speed-down": {
+      "description": "__MSG_cmdSpeedDown__"
+    },
+    "speed-reset": {
+      "description": "__MSG_cmdSpeedReset__"
+    },
+    "speed-up": {
+      "description": "__MSG_cmdSpeedUp__"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   },

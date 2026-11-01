@@ -1,0 +1,92 @@
+{
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "Усиление громкости до 500% и контроль скорости видео."
+  },
+  "volume": {
+    "message": "Громкость"
+  },
+  "speed": {
+    "message": "Скорость"
+  },
+  "reset": {
+    "message": "Сброс"
+  },
+  "mute": {
+    "message": "Без звука"
+  },
+  "unmute": {
+    "message": "Включить звук"
+  },
+  "boostWarning": {
+    "message": "Громкость > 100%: возможно искажение звука."
+  },
+  "noMedia": {
+    "message": "На этой странице не найдено аудио или видео."
+  },
+  "speedError": {
+    "message": "Невозможно изменить скорость на этой странице."
+  },
+  "captureError": {
+    "message": "Не удалось управлять звуком этой вкладки. Попробуйте обновить страницу."
+  },
+  "restricted": {
+    "message": "C.V. не работает на внутренних страницах браузера или в магазине расширений."
+  },
+  "settingsTitle": {
+    "message": "Настройки"
+  },
+  "settingRemember": {
+    "message": "Запоминать громкость для вкладки"
+  },
+  "settingRememberDesc": {
+    "message": "Сохраняет уровень звука для каждой вкладки при навигации"
+  },
+  "settingLanguage": {
+    "message": "Язык"
+  },
+  "settingLanguageDesc": {
+    "message": "Выберите язык интерфейса"
+  },
+  "shortcutsTitle": {
+    "message": "Горячие клавиши"
+  },
+  "shortcutsDesc": {
+    "message": "Включить сочетания клавиш"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "Усиление громкости: Уменьшить громкость"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "Усиление громкости: Сбросить на 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "Усиление громкости: Увеличить громкость"
+  },
+  "cmdSpeedUp": {
+    "message": "Скорость: Увеличить скорость воспроизведения"
+  },
+  "cmdSpeedDown": {
+    "message": "Скорость: Уменьшить скорость воспроизведения"
+  },
+  "cmdSpeedReset": {
+    "message": "Скорость: Сбросить на 1×"
+  },
+  "homeTitle": {
+    "message": "Главная"
+  },
+  "updateAvailableTitle": {
+    "message": "Доступна новая версия"
+  },
+  "donateText": {
+    "message": "Поддержать разработчика на Ko-fi"
+  },
+  "legalNotice": {
+    "message": "Соответствует GDPR ЕС. Нулевой сбор данных, 100% локальная обработка звука."
+  },
+  "updateAvailable": {
+    "message": "доступно!"
+  }
+}

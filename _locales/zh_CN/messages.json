@@ -1,0 +1,92 @@
+{
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "音量增强高达 500% 及视频播放速度控制。"
+  },
+  "volume": {
+    "message": "音量"
+  },
+  "speed": {
+    "message": "速度"
+  },
+  "reset": {
+    "message": "重置"
+  },
+  "mute": {
+    "message": "静音"
+  },
+  "unmute": {
+    "message": "取消静音"
+  },
+  "boostWarning": {
+    "message": "音量 > 100%：音频可能会失真。"
+  },
+  "noMedia": {
+    "message": "此页面未找到音频或视频。"
+  },
+  "speedError": {
+    "message": "无法在此页面上更改播放速度。"
+  },
+  "captureError": {
+    "message": "无法控制此标签页的音频。请尝试刷新页面。"
+  },
+  "restricted": {
+    "message": "C.V. 无法在浏览器内部页面或扩展商店中运行。"
+  },
+  "settingsTitle": {
+    "message": "设置"
+  },
+  "settingRemember": {
+    "message": "记住每个标签页的音量"
+  },
+  "settingRememberDesc": {
+    "message": "在浏览时为每个标签页保持音量级别"
+  },
+  "settingLanguage": {
+    "message": "语言"
+  },
+  "settingLanguageDesc": {
+    "message": "选择界面语言"
+  },
+  "shortcutsTitle": {
+    "message": "快捷键"
+  },
+  "shortcutsDesc": {
+    "message": "启用快捷键控制"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "音量增强：降低音量"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "音量增强：重置为 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "音量增强：增加音量"
+  },
+  "cmdSpeedUp": {
+    "message": "速度：提高播放速度"
+  },
+  "cmdSpeedDown": {
+    "message": "速度：降低播放速度"
+  },
+  "cmdSpeedReset": {
+    "message": "速度：重置为 1×"
+  },
+  "homeTitle": {
+    "message": "主页"
+  },
+  "updateAvailableTitle": {
+    "message": "有新版本可用"
+  },
+  "donateText": {
+    "message": "在 Ko-fi 上支持开发者"
+  },
+  "legalNotice": {
+    "message": "符合欧盟 GDPR。零数据收集，100% 本地音频处理。"
+  },
+  "updateAvailable": {
+    "message": "可用！"
+  }
+}

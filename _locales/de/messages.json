@@ -6,7 +6,7 @@
     "message": "Lautstärke-Boost bis 500 % und Video-Tempo."
   },
   "volume": {
-    "message": "Lautstärke"
+    "message": "Volume"
   },
   "speed": {
     "message": "Tempo"
@@ -16,6 +16,9 @@
   },
   "mute": {
     "message": "Stumm"
+  },
+  "unmute": {
+    "message": "Lautstärke an"
   },
   "boostWarning": {
     "message": "Lautstärke > 100 %: Audio kann verzerren."
@@ -41,8 +44,41 @@
   "settingRememberDesc": {
     "message": "Behält Lautstärke beim Seitenwechsel bei"
   },
-  "settingUpdate": {
-    "message": "Update-Benachrichtigungen"
+  "settingLanguage": {
+    "message": "Sprache"
+  },
+  "settingLanguageDesc": {
+    "message": "Wähle die Sprache der Benutzeroberfläche"
+  },
+  "shortcutsTitle": {
+    "message": "Tastenkombinationen"
+  },
+  "shortcutsDesc": {
+    "message": "Tastenkürzel aktivieren"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "Lautstärke-Boost: Verringern"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "Lautstärke-Boost: Auf 100% zurücksetzen"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "Lautstärke-Boost: Erhöhen"
+  },
+  "cmdSpeedUp": {
+    "message": "Tempo: Wiedergabetempo erhöhen"
+  },
+  "cmdSpeedDown": {
+    "message": "Tempo: Wiedergabetempo verringern"
+  },
+  "cmdSpeedReset": {
+    "message": "Tempo: Auf 1× zurücksetzen"
+  },
+  "homeTitle": {
+    "message": "Startseite"
+  },
+  "updateAvailableTitle": {
+    "message": "Neue Version verfügbar"
   },
   "donateText": {
     "message": "Kauf dem Entwickler einen Kaffee"

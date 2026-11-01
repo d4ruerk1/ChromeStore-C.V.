@@ -1,0 +1,92 @@
+{
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "最大500%の音量ブーストと動画再生速度コントロール。"
+  },
+  "volume": {
+    "message": "音量"
+  },
+  "speed": {
+    "message": "速度"
+  },
+  "reset": {
+    "message": "リセット"
+  },
+  "mute": {
+    "message": "ミュート"
+  },
+  "unmute": {
+    "message": "ミュート解除"
+  },
+  "boostWarning": {
+    "message": "音量 > 100%: 音が歪む可能性があります。"
+  },
+  "noMedia": {
+    "message": "このページに音声または動画が見つかりません。"
+  },
+  "speedError": {
+    "message": "このページでは再生速度を変更できません。"
+  },
+  "captureError": {
+    "message": "このタブの音声を制御できません。ページを再読み込みしてください。"
+  },
+  "restricted": {
+    "message": "C.V. はブラウザの内部ページや拡張機能ストアでは動作しません。"
+  },
+  "settingsTitle": {
+    "message": "設定"
+  },
+  "settingRemember": {
+    "message": "タブごとに音量を記憶"
+  },
+  "settingRememberDesc": {
+    "message": "ナビゲーション中もタブごとの音量レベルを保持します"
+  },
+  "settingLanguage": {
+    "message": "言語"
+  },
+  "settingLanguageDesc": {
+    "message": "インターフェース言語を選択"
+  },
+  "shortcutsTitle": {
+    "message": "キーボードショートカット"
+  },
+  "shortcutsDesc": {
+    "message": "ショートカットキーを有効化"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "音量ブースト: 音量を下げる"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "音量ブースト: 100%にリセット"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "音量ブースト: 音量を上げる"
+  },
+  "cmdSpeedUp": {
+    "message": "速度: 再生速度を上げる"
+  },
+  "cmdSpeedDown": {
+    "message": "速度: 再生速度を下げる"
+  },
+  "cmdSpeedReset": {
+    "message": "速度: 1×にリセット"
+  },
+  "homeTitle": {
+    "message": "ホーム"
+  },
+  "updateAvailableTitle": {
+    "message": "新しいバージョンが利用可能です"
+  },
+  "donateText": {
+    "message": "Ko-fi で開発者を支援"
+  },
+  "legalNotice": {
+    "message": "EU GDPRに準拠。データ収集ゼロ、100%ローカル音声処理。"
+  },
+  "updateAvailable": {
+    "message": "利用可能！"
+  }
+}

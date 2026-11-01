@@ -17,6 +17,9 @@
   "mute": {
     "message": "Mute"
   },
+  "unmute": {
+    "message": "Unmute"
+  },
   "boostWarning": {
     "message": "Volume > 100%: audio may distort."
   },
@@ -41,8 +44,41 @@
   "settingRememberDesc": {
     "message": "Keeps volume level across tab navigation"
   },
-  "settingUpdate": {
-    "message": "Update notifications"
+  "settingLanguage": {
+    "message": "Language"
+  },
+  "settingLanguageDesc": {
+    "message": "Choose interface language"
+  },
+  "shortcutsTitle": {
+    "message": "Keyboard shortcuts"
+  },
+  "shortcutsDesc": {
+    "message": "Enable shortcut keys"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "Volume Boost: Decrease volume"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "Volume Boost: Reset to 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "Volume Boost: Increase volume"
+  },
+  "cmdSpeedUp": {
+    "message": "Speed: Increase playback speed"
+  },
+  "cmdSpeedDown": {
+    "message": "Speed: Decrease playback speed"
+  },
+  "cmdSpeedReset": {
+    "message": "Speed: Reset to 1×"
+  },
+  "homeTitle": {
+    "message": "Home"
+  },
+  "updateAvailableTitle": {
+    "message": "New version available"
   },
   "donateText": {
     "message": "Support the developer on Ko-fi"

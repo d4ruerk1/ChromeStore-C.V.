@@ -5,12 +5,12 @@ const tabs = new Map();
 let ctx = null;
 let clipperCurve = null;
 
-// Precompute smooth soft-clipping curve (100% linear up to 0.75, smooth tanh saturation up to 1.0)
+// Precompute smooth soft-clipping curve (100% linear up to 0.85, smooth tanh saturation up to 1.0)
 function getClipperCurve() {
   if (clipperCurve) return clipperCurve;
   const n = 4096;
   const curve = new Float32Array(n);
-  const threshold = 0.75;
+  const threshold = 0.85;
   const headroom = 1.0 - threshold;
   for (let i = 0; i < n; i++) {
     const x = (i * 2) / (n - 1) - 1; // [-1, 1]
@@ -39,6 +39,8 @@ function stop(tabId) {
   tabs.delete(tabId);
   try {
     t.src.disconnect();
+    if (t.hp) t.hp.disconnect();
+    if (t.eq) t.eq.disconnect();
     t.gain.disconnect();
     t.lim.disconnect();
     t.clipper.disconnect();
@@ -107,24 +109,45 @@ async function start(tabId, streamId, g) {
   }
 
   const src = audioCtx.createMediaStreamSource(stream);
+
+  // 1. High-Pass Filter: Cuts inaudible sub-bass below 80 Hz that causes speaker crackle/rattle when boosted
+  const hp = audioCtx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 80;
+  hp.Q.value = 0.707;
+
+  // 2. Clarity & Presence EQ: Balances voice and high mids at 2.5 kHz
+  const eq = audioCtx.createBiquadFilter();
+  eq.type = 'peaking';
+  eq.frequency.value = 2500;
+  eq.Q.value = 1.0;
+  eq.gain.value = 2.0;
+
+  // 3. Gain Node (volume multiplier from 0.0 to 5.0)
   const gain = audioCtx.createGain();
   gain.gain.value = Math.max(0, Math.min(5, g));
 
-  // Professional Dynamics Compressor tuned for transparent boost without distortion or pumping
+  // 4. Dynamics Compressor (AGC): Catches peaks smoothly with soft knee
   const lim = audioCtx.createDynamicsCompressor();
-  lim.threshold.value = -24;
-  lim.knee.value = 30;
-  lim.ratio.value = 12;
+  lim.threshold.value = -6;
+  lim.knee.value = 12;
+  lim.ratio.value = 3.5;
   lim.attack.value = 0.003;
-  lim.release.value = 0.25;
+  lim.release.value = 0.18;
 
-  // Soft-clipper to catch transient peaks smoothly with zero harsh clipping
+  // 5. Anti-Clipping Soft-Saturator (tanh curve smoothly rounding peaks above 0.85)
   const clipper = audioCtx.createWaveShaper();
   clipper.curve = getClipperCurve();
-  clipper.oversample = 'none';
+  clipper.oversample = '2x';
 
-  src.connect(gain).connect(lim).connect(clipper).connect(audioCtx.destination);
-  tabs.set(tabId, { stream, src, gain, lim, clipper });
+  src.connect(hp);
+  hp.connect(eq);
+  eq.connect(gain);
+  gain.connect(lim);
+  lim.connect(clipper);
+  clipper.connect(audioCtx.destination);
+
+  tabs.set(tabId, { stream, src, hp, eq, gain, lim, clipper });
 
   const track = stream.getAudioTracks()[0];
   if (track) {

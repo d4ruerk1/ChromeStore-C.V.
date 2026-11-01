@@ -17,6 +17,9 @@
   "mute": {
     "message": "Muto"
   },
+  "unmute": {
+    "message": "Riattiva audio"
+  },
   "boostWarning": {
     "message": "Volume > 100%: possibile distorsione audio."
   },
@@ -39,10 +42,43 @@
     "message": "Ricorda volume per scheda"
   },
   "settingRememberDesc": {
-    "message": "Mantiene il livello di volume durante la navigazione"
+    "message": "Mantiene il livello per ogni scheda durante la navigazione"
   },
-  "settingUpdate": {
-    "message": "Notifiche nuovi aggiornamenti"
+  "settingLanguage": {
+    "message": "Lingua"
+  },
+  "settingLanguageDesc": {
+    "message": "Scegli la lingua dell'interfaccia"
+  },
+  "shortcutsTitle": {
+    "message": "Scorciatoie da tastiera"
+  },
+  "shortcutsDesc": {
+    "message": "Abilita tasti rapidi"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "Boost Volume: Diminuisci volume"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "Boost Volume: Ripristina a 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "Boost Volume: Aumenta volume"
+  },
+  "cmdSpeedUp": {
+    "message": "Velocità: Aumenta velocità di riproduzione"
+  },
+  "cmdSpeedDown": {
+    "message": "Velocità: Diminuisci velocità di riproduzione"
+  },
+  "cmdSpeedReset": {
+    "message": "Velocità: Ripristina a 1×"
+  },
+  "homeTitle": {
+    "message": "Schermata principale"
+  },
+  "updateAvailableTitle": {
+    "message": "Nuova versione disponibile"
   },
   "donateText": {
     "message": "Offri un caffè allo sviluppatore"

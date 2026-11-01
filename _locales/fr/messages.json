@@ -17,6 +17,9 @@
   "mute": {
     "message": "Muet"
   },
+  "unmute": {
+    "message": "Rétablir le son"
+  },
   "boostWarning": {
     "message": "Volume > 100 % : distorsion audio possible."
   },
@@ -41,8 +44,41 @@
   "settingRememberDesc": {
     "message": "Conserve le volume lors de la navigation"
   },
-  "settingUpdate": {
-    "message": "Notifications de mise à jour"
+  "settingLanguage": {
+    "message": "Langue"
+  },
+  "settingLanguageDesc": {
+    "message": "Choisir la langue de l'interface"
+  },
+  "shortcutsTitle": {
+    "message": "Raccourcis clavier"
+  },
+  "shortcutsDesc": {
+    "message": "Activer les touches de raccourci"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "Boost de Volume : Diminuer le volume"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "Boost de Volume : Réinitialiser à 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "Boost de Volume : Augmenter le volume"
+  },
+  "cmdSpeedUp": {
+    "message": "Vitesse : Augmenter la vitesse"
+  },
+  "cmdSpeedDown": {
+    "message": "Vitesse : Diminuer la vitesse"
+  },
+  "cmdSpeedReset": {
+    "message": "Vitesse : Réinitialiser à 1×"
+  },
+  "homeTitle": {
+    "message": "Accueil"
+  },
+  "updateAvailableTitle": {
+    "message": "Nouvelle version disponible"
   },
   "donateText": {
     "message": "Offrir un café au développeur"

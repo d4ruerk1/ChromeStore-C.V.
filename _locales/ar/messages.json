@@ -1,0 +1,92 @@
+{
+  "extName": {
+    "message": "C.V."
+  },
+  "extDescription": {
+    "message": "تضخيم الصوت حتى 500% والتحكم في سرعة تشغيل الفيديو."
+  },
+  "volume": {
+    "message": "الصوت"
+  },
+  "speed": {
+    "message": "السرعة"
+  },
+  "reset": {
+    "message": "إعادة الضبط"
+  },
+  "mute": {
+    "message": "كتم الصوت"
+  },
+  "unmute": {
+    "message": "إلغاء كتم الصوت"
+  },
+  "boostWarning": {
+    "message": "الصوت > 100%: قد يحدث تشويش في الصوت."
+  },
+  "noMedia": {
+    "message": "لم يتم العثور على صوت أو فيديو في هذه الصفحة."
+  },
+  "speedError": {
+    "message": "لا يمكن تغيير السرعة في هذه الصفحة."
+  },
+  "captureError": {
+    "message": "تعذر التحكم في صوت علامة التبويب هذه. يرجى إعادة تحميل الصفحة."
+  },
+  "restricted": {
+    "message": "لا يعمل C.V. على صفحات المتصفح الداخلية أو في متجر الإضافات."
+  },
+  "settingsTitle": {
+    "message": "الإعدادات"
+  },
+  "settingRemember": {
+    "message": "تذكر مستوى الصوت لكل علامة تبويب"
+  },
+  "settingRememberDesc": {
+    "message": "يحافظ على مستوى الصوت لكل علامة تبويب أثناء التصفح"
+  },
+  "settingLanguage": {
+    "message": "اللغة"
+  },
+  "settingLanguageDesc": {
+    "message": "اختر لغة الواجهة"
+  },
+  "shortcutsTitle": {
+    "message": "اختصارات لوحة المفاتيح"
+  },
+  "shortcutsDesc": {
+    "message": "تفعيل مفاتيح الاختصار"
+  },
+  "cmdVolumeBoostDown": {
+    "message": "تضخيم الصوت: خفض مستوى الصوت"
+  },
+  "cmdVolumeBoostReset": {
+    "message": "تضخيم الصوت: إعادة الضبط إلى 100%"
+  },
+  "cmdVolumeBoostUp": {
+    "message": "تضخيم الصوت: رفع مستوى الصوت"
+  },
+  "cmdSpeedUp": {
+    "message": "السرعة: زيادة سرعة التشغيل"
+  },
+  "cmdSpeedDown": {
+    "message": "السرعة: تقليل سرعة التشغيل"
+  },
+  "cmdSpeedReset": {
+    "message": "السرعة: إعادة الضبط إلى 1×"
+  },
+  "homeTitle": {
+    "message": "الرئيسية"
+  },
+  "updateAvailableTitle": {
+    "message": "إصدار جديد متوفر"
+  },
+  "donateText": {
+    "message": "ادعم المطور على Ko-fi"
+  },
+  "legalNotice": {
+    "message": "متوافق مع GDPR. بدون جمع بيانات، معالجة صوتية محلية 100%."
+  },
+  "updateAvailable": {
+    "message": "متوفر!"
+  }
+}
