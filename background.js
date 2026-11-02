@@ -1,4 +1,4 @@
-'use strict';
+function __cvScan(d){const l=[];if(!d)return l;try{const m=d.querySelectorAll("video, audio");for(let i=0;i<m.length;i++)l.push(m[i]);const f=d.querySelectorAll("iframe");for(let j=0;j<f.length;j++){try{if(f[j].contentDocument)l.push(...__cvScan(f[j].contentDocument));}catch(_){}}}catch(_){}return l;} 'use strict';
 // Cross-browser API shim
 const api = (typeof browser !== 'undefined' && browser.runtime) ? browser : chrome;
 
@@ -250,20 +250,29 @@ function injectMediaVolume(tabId, v) {
   const isCaptured = v > 100;
   const code = (volVal, normVal, isCap) => {
     function findAllMedia(root) {
-      let list = [];
-      if (!root) return list;
-      try {
-        const media = root.querySelectorAll('video, audio');
-        for (let i = 0; i < media.length; i++) list.push(media[i]);
-      } catch (_) {}
-      try {
-        const all = root.querySelectorAll('*');
-        for (let i = 0; i < all.length; i++) {
-          if (all[i].shadowRoot) list = list.concat(findAllMedia(all[i].shadowRoot));
-        }
-      } catch (_) {}
-      return list;
-    }
+    let list = [];
+    if (!root) return list;
+    try {
+      const media = root.querySelectorAll('video, audio');
+      for (let i = 0; i < media.length; i++) list.push(media[i]);
+    } catch (_) {}
+    try {
+      const frames = root.querySelectorAll('iframe, frame');
+      for (let i = 0; i < frames.length; i++) {
+        try {
+          const doc = frames[i].contentDocument || frames[i].contentWindow?.document;
+          if (doc) list = list.concat(findAllMedia(doc));
+        } catch (_) {}
+      }
+    } catch (_) {}
+    try {
+      const all = root.querySelectorAll('*');
+      for (let i = 0; i < all.length; i++) {
+        if (all[i].shadowRoot) list = list.concat(findAllMedia(all[i].shadowRoot));
+      }
+    } catch (_) {}
+    return list;
+  }
     const media = findAllMedia(document);
     for (let i = 0; i < media.length; i++) {
       try {
@@ -344,27 +353,18 @@ function injectMediaVolume(tabId, v) {
     window.__cvIsCaptured = isCap;
   };
 
-  // Run in top frame first (fastest and immune to iframe errors)
-  api.scripting.executeScript({
-    target: { tabId },
-    world: 'MAIN',
-    func: code,
-    args: [v, norm, isCaptured]
-  }).catch(() => {
-    api.scripting.executeScript({
-      target: { tabId },
-      func: code,
-      args: [v, norm, isCaptured]
-    }).catch(() => {});
-  });
-
-  // Also try all frames
   api.scripting.executeScript({
     target: { tabId, allFrames: true },
     world: 'MAIN',
     func: code,
     args: [v, norm, isCaptured]
-  }).catch(() => {});
+  }).catch(() => {
+    api.scripting.executeScript({
+      target: { tabId, allFrames: true },
+      func: code,
+      args: [v, norm, isCaptured]
+    }).catch(() => {});
+  });
 }
 
 function injectSpeedAdjustment(tabId, delta, exactRate) {
@@ -378,10 +378,49 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
         const v = document.querySelector('video, audio');
         cur = v ? v.playbackRate : 1.0;
       }
-      // Always increment or decrement in exact steps of 0.25x
       next = Math.min(5.0, Math.max(0.25, Math.round((cur + delta) * 4) / 4));
     }
     window.__cvRate = next;
+
+    if (!window.__cvProtoPatched) {
+      window.__cvProtoPatched = true;
+      try {
+        const desc = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'playbackRate');
+        if (desc && desc.set) {
+          window.__cvOrigRateSet = desc.set;
+          window.__cvOrigRateGet = desc.get;
+          Object.defineProperty(HTMLMediaElement.prototype, 'playbackRate', {
+            configurable: true,
+            enumerable: true,
+            get() {
+              return window.__cvOrigRateGet.call(this);
+            },
+            set(val) {
+              if (this.__cvSetting) return window.__cvOrigRateSet.call(this, val);
+              const tr = window.__cvRate;
+              if (typeof tr === 'number' && Math.abs(val - tr) > 0.01) {
+                return;
+              }
+              return window.__cvOrigRateSet.call(this, val);
+            }
+          });
+        }
+      } catch (_) {}
+    }
+
+    function applySpeed(el, val) {
+      try {
+        el.__cvSetting = true;
+        if (window.__cvOrigRateSet) {
+          window.__cvOrigRateSet.call(el, val);
+        } else {
+          el.playbackRate = val;
+        }
+        el.defaultPlaybackRate = val;
+      } catch (_) {} finally {
+        el.__cvSetting = false;
+      }
+    }
 
     function findAllMedia(root) {
       let list = [];
@@ -389,6 +428,15 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
       try {
         const media = root.querySelectorAll('video, audio');
         for (let i = 0; i < media.length; i++) list.push(media[i]);
+      } catch (_) {}
+      try {
+        const frames = root.querySelectorAll('iframe, frame');
+        for (let i = 0; i < frames.length; i++) {
+          try {
+            const doc = frames[i].contentDocument || frames[i].contentWindow?.document;
+            if (doc) list = list.concat(findAllMedia(doc));
+          } catch (_) {}
+        }
       } catch (_) {}
       try {
         const all = root.querySelectorAll('*');
@@ -401,39 +449,50 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
 
     const media = findAllMedia(document);
     for (let i = 0; i < media.length; i++) {
-      try {
-        media[i].playbackRate = next;
-        media[i].defaultPlaybackRate = next;
-      } catch (_) {}
+      applySpeed(media[i], next);
+      if (!media[i].__cvRateHooked) {
+        media[i].__cvRateHooked = true;
+        let timer = null;
+        media[i].addEventListener('ratechange', (e) => {
+          if (media[i].__cvSetting) return;
+          const tr = window.__cvRate;
+          if (typeof tr === 'number' && Math.abs(media[i].playbackRate - tr) > 0.01) {
+            e.stopImmediatePropagation();
+            if (!timer) {
+              timer = setTimeout(() => {
+                timer = null;
+                applySpeed(media[i], window.__cvRate);
+              }, 300);
+            }
+          }
+        }, true);
+      }
     }
 
     try {
       const yt = document.getElementById('movie_player') || document.querySelector('.html5-video-player');
-      if (yt && typeof yt.setPlaybackRate === 'function') yt.setPlaybackRate(next);
+      if (yt && typeof yt.setPlaybackRate === 'function') {
+        if (typeof yt.getPlaybackRate === 'function') {
+          if (Math.abs(yt.getPlaybackRate() - next) > 0.01) yt.setPlaybackRate(next);
+        } else {
+          yt.setPlaybackRate(next);
+        }
+      }
     } catch (_) {}
   };
 
-  // Run in top frame first
-  api.scripting.executeScript({
-    target: { tabId },
-    world: 'MAIN',
-    func: code,
-    args: [delta, exactRate]
-  }).catch(() => {
-    api.scripting.executeScript({
-      target: { tabId },
-      func: code,
-      args: [delta, exactRate]
-    }).catch(() => {});
-  });
-
-  // Also try all frames
   api.scripting.executeScript({
     target: { tabId, allFrames: true },
     world: 'MAIN',
     func: code,
     args: [delta, exactRate]
-  }).catch(() => {});
+  }).catch(() => {
+    api.scripting.executeScript({
+      target: { tabId, allFrames: true },
+      func: code,
+      args: [delta, exactRate]
+    }).catch(() => {});
+  });
 }
 
 // Keyboard shortcuts support
