@@ -25,7 +25,7 @@ Estensione browser moderna basata su **Manifest V3** per browser basati su Chrom
   * Piena conformità con GDPR, Codice Privacy italiano e linee guida di Chrome Web Store e Mozilla AMO.
 * **Interfaccia e Accessibilità**
   * Supporto completo a 9 lingue con rilevamento automatico o selezione manuale: Italiano (IT), Inglese (EN), Spagnolo (ES), Francese (FR), Tedesco (DE), Russo (RU), Cinese Semplificato (ZH-CN), Giapponese (JA) e Arabo (AR).
-  * Design reattivo con supporto automatico al tema Chiaro/Scuro del sistema operativo[cite: 1, 2].
+  * Design reattivo con supporto automatico al tema Chiaro/Scuro del sistema operativo.
 
 ---
 
@@ -38,11 +38,11 @@ Estensione browser moderna basata su **Manifest V3** per browser basati su Chrom
 | **Ripristina Volume (100%)** | Configurabile in `Gestione scorciatoie` |
 | **Aumenta Velocità** | Configurabile in `Gestione scorciatoie` |
 | **Diminuisci Velocità** | Configurabile in `Gestione scorciatoie` |
-| **Ripristina Velocità (1×)** | Configurabile in `Gestione scorciatoie`[cite: 2] |
+| **Ripristina Velocità (1×)** | Configurabile in `Gestione scorciatoie` |
 
 > Per personalizzare le combinazioni di tasti:
 > * Su Chromium: visita `chrome://extensions/shortcuts`
-> * Su Firefox: visita `about:addons` > icona ingranaggio > *Gestisci scorciatoie da tastiera*[cite: 1, 2]
+> * Su Firefox: visita `about:addons` > icona ingranaggio > *Gestisci scorciatoie da tastiera*
 
 ---
 
@@ -53,21 +53,21 @@ Estensione browser moderna basata su **Manifest V3** per browser basati su Chrom
 2. Apri il browser e naviga all'indirizzo `chrome://extensions` (oppure `brave://extensions` / `edge://extensions`).
 3. Attiva l'interruttore **Modalità sviluppatore** in alto a destra.
 4. Clicca su **Carica estensione non pacchettizzata** (*Load unpacked*).
-5. Seleziona la cartella principale contenente il file `manifest.json`[cite: 1, 2].
+5. Seleziona la cartella principale contenente il file `manifest.json`.
 
 ### Mozilla Firefox (v115.0 o superiore)
 1. Apri Firefox e naviga all'indirizzo `about:debugging#/runtime/this-firefox`.
 2. Clicca su **Carica componente aggiuntivo temporaneo...**.
-3. Seleziona il file `manifest.json` all'interno della cartella dell'estensione[cite: 1, 2].
+3. Seleziona il file `manifest.json` all'interno della cartella dell'estensione.
 
 ---
 
 ## Requisiti Tecnici
 * **Piattaforma:** Manifest V3
 * **Motori supportati:** Chromium $\ge$ 116 (supporto `chrome.offscreen`), Firefox ESR $\ge$ 115.0
-* **Permessi impiegati:** `tabCapture`, `offscreen`, `storage`, `activeTab`, `scripting`[cite: 2]
+* **Permessi impiegati:** `tabCapture`, `offscreen`, `storage`, `activeTab`, `scripting`
 
 ---
 
 ## Licenza
-Distribuito sotto licenza [Apache 2.0](LICENSE). Consultare il file `LICENSE` per maggiori dettagli[cite: 1, 2].
+Distribuito sotto licenza [Apache 2.0](LICENSE). Consultare il file `LICENSE` per maggiori dettagli.
