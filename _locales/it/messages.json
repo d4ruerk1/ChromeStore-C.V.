@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "Boost volume fino al 500% e controllo velocità video."
+    "message": "Boost volume fino al 500%, controllo velocità video e Picture-in-Picture automatico."
   },
   "volume": {
     "message": "Volume"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Mantiene il livello per ogni scheda durante la navigazione"
   },
+  "settingPip": {
+    "message": "Picture-in-Picture automatico"
+  },
+  "settingPipDesc": {
+    "message": "Attiva automaticamente il video in PiP quando cambi scheda o riduci a icona"
+  },
   "settingLanguage": {
     "message": "Lingua"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "Velocità: Ripristina a 1×"
+  },
+  "cmdTogglePip": {
+    "message": "Picture-in-Picture: Attiva/disattiva finestra mobile"
   },
   "homeTitle": {
     "message": "Schermata principale"

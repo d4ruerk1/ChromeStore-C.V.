@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "最大500%の音量ブーストと動画再生速度コントロール。"
+    "message": "最大500%の音量ブースト、動画再生速度コントロール、および自動ピクチャー・イン・ピクチャー。"
   },
   "volume": {
     "message": "音量"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "ナビゲーション中もタブごとの音量レベルを保持します"
   },
+  "settingPip": {
+    "message": "自動ピクチャー・イン・ピクチャー"
+  },
+  "settingPipDesc": {
+    "message": "タブの切り替えや最小化時に自動的に動画をPiPで表示"
+  },
   "settingLanguage": {
     "message": "言語"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "速度: 1×にリセット"
+  },
+  "cmdTogglePip": {
+    "message": "ピクチャー・イン・ピクチャー: フローティングウィンドウの切り替え"
   },
   "homeTitle": {
     "message": "ホーム"

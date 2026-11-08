@@ -64,7 +64,7 @@ async function getState(tabId) {
   const k = key(tabId);
   const data = (await api.storage.session.get(k))[k];
   const vol = data && data.vol != null ? data.vol : 100;
-  if (vol !== 100) {
+  if (vol > 100) {
     if (await hasOffscreen()) {
       const r = await toOff({ type: 'isActive', tabId }).catch(() => null);
       if (!r || !r.active) {
@@ -100,13 +100,15 @@ function getStreamId(tabId) {
 
 async function setVolume(tabId, vol, final, providedStreamId) {
   vol = clamp(Math.round(Number(vol) || 0), 0, 500);
-  if (vol === 100 && final) {
+  if (vol <= 100) {
     await stopCapture(tabId);
+    await saveState(tabId, { vol });
+    badge(tabId, vol);
+    return { vol, active: false };
   } else {
     await ensureOffscreen();
     const r = await toOff({ type: 'gain', tabId, gain: vol / 100 });
     if (!r || !r.ok) {
-      if (vol === 100) { await saveState(tabId, { vol }); badge(tabId, vol); return { vol, active: false }; }
       let streamId = providedStreamId;
       if (!streamId) {
         streamId = await getStreamId(tabId);
@@ -123,7 +125,7 @@ async function setVolume(tabId, vol, final, providedStreamId) {
   }
   await saveState(tabId, { vol });
   badge(tabId, vol);
-  return { vol, active: vol > 100 };
+  return { vol, active: true };
 }
 
 async function forget(tabId) {
@@ -289,7 +291,18 @@ function injectMediaVolume(tabId, v) {
       }
     } catch (_) {}
 
-    if (!isCap && volVal > 100) {
+    // Audio handling: neutral when <= 100% or captured, transparent limiter if uncaptured boost
+    if (volVal <= 100 || isCap) {
+      try {
+        if (window.__cvAudioCtx) {
+          for (let i = 0; i < media.length; i++) {
+            if (media[i].__cvGain) {
+              media[i].__cvGain.gain.setValueAtTime(1.0, window.__cvAudioCtx.currentTime);
+            }
+          }
+        }
+      } catch (_) {}
+    } else if (!isCap && volVal > 100) {
       const boost = volVal / 100;
       try {
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -302,27 +315,17 @@ function injectMediaVolume(tabId, v) {
             if (!el.__cvSource) {
               try {
                 el.__cvSource = ctx.createMediaElementSource(el);
-                el.__cvHp = ctx.createBiquadFilter();
-                el.__cvHp.type = 'highpass';
-                el.__cvHp.frequency.value = 80;
-
-                el.__cvEq = ctx.createBiquadFilter();
-                el.__cvEq.type = 'peaking';
-                el.__cvEq.frequency.value = 2500;
-                el.__cvEq.gain.value = 2.0;
-
                 el.__cvGain = ctx.createGain();
 
+                // Clean transparent dynamics limiter
                 el.__cvLimiter = ctx.createDynamicsCompressor();
-                el.__cvLimiter.threshold.value = -6;
+                el.__cvLimiter.threshold.value = -2.0;
                 el.__cvLimiter.knee.value = 12;
-                el.__cvLimiter.ratio.value = 3.5;
-                el.__cvLimiter.attack.value = 0.003;
-                el.__cvLimiter.release.value = 0.18;
+                el.__cvLimiter.ratio.value = 20;
+                el.__cvLimiter.attack.value = 0.002;
+                el.__cvLimiter.release.value = 0.06;
 
-                el.__cvSource.connect(el.__cvHp);
-                el.__cvHp.connect(el.__cvEq);
-                el.__cvEq.connect(el.__cvGain);
+                el.__cvSource.connect(el.__cvGain);
                 el.__cvGain.connect(el.__cvLimiter);
                 el.__cvLimiter.connect(ctx.destination);
               } catch (_) {}
@@ -333,16 +336,6 @@ function injectMediaVolume(tabId, v) {
               } catch (_) {
                 try { el.__cvGain.gain.value = boost; } catch (_) {}
               }
-            }
-          }
-        }
-      } catch (_) {}
-    } else if (isCap) {
-      try {
-        if (window.__cvAudioCtx) {
-          for (let i = 0; i < media.length; i++) {
-            if (media[i].__cvGain) {
-              media[i].__cvGain.gain.setTargetAtTime(1.0, window.__cvAudioCtx.currentTime, 0.015);
             }
           }
         }
@@ -406,11 +399,26 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
           });
         }
       } catch (_) {}
+
+      try {
+        if (!window.__cvPitchPatched) {
+          window.__cvPitchPatched = true;
+          Object.defineProperty(HTMLMediaElement.prototype, 'preservesPitch', {
+            configurable: true,
+            enumerable: true,
+            get() { return true; },
+            set(_) {}
+          });
+        }
+      } catch (_) {}
     }
 
     function applySpeed(el, val) {
       try {
         el.__cvSetting = true;
+        el.preservesPitch = true;
+        if ('mozPreservesPitch' in el) el.mozPreservesPitch = true;
+        if ('webkitPreservesPitch' in el) el.webkitPreservesPitch = true;
         if (window.__cvOrigRateSet) {
           window.__cvOrigRateSet.call(el, val);
         } else {
@@ -457,7 +465,9 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
           if (media[i].__cvSetting) return;
           const tr = window.__cvRate;
           if (typeof tr === 'number' && Math.abs(media[i].playbackRate - tr) > 0.01) {
-            e.stopImmediatePropagation();
+            if (!location.hostname.includes('youtube.com')) {
+              e.stopImmediatePropagation();
+            }
             if (!timer) {
               timer = setTimeout(() => {
                 timer = null;
@@ -472,10 +482,12 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
     try {
       const yt = document.getElementById('movie_player') || document.querySelector('.html5-video-player');
       if (yt && typeof yt.setPlaybackRate === 'function') {
-        if (typeof yt.getPlaybackRate === 'function') {
-          if (Math.abs(yt.getPlaybackRate() - next) > 0.01) yt.setPlaybackRate(next);
-        } else {
-          yt.setPlaybackRate(next);
+        if (next <= 2.0) {
+          if (typeof yt.getPlaybackRate === 'function') {
+            if (Math.abs(yt.getPlaybackRate() - next) > 0.01) yt.setPlaybackRate(next);
+          } else {
+            yt.setPlaybackRate(next);
+          }
         }
       }
     } catch (_) {}
@@ -492,6 +504,101 @@ function injectSpeedAdjustment(tabId, delta, exactRate) {
       func: code,
       args: [delta, exactRate]
     }).catch(() => {});
+  });
+}
+
+/* ---------- Window focus & tab management for robust Auto-PiP ---------- */
+let lastFocusedWindowId = null;
+let blurDebounceTimer = null;
+const lastActiveTabByWindow = new Map();
+
+if (api.windows && api.windows.onFocusChanged) {
+  api.windows.getLastFocused({ populate: false }).then((win) => {
+    if (win && win.id != null) lastFocusedWindowId = win.id;
+  }).catch(() => {});
+
+  api.windows.onFocusChanged.addListener((windowId) => {
+    if (windowId === api.windows.WINDOW_ID_NONE) {
+      // Debounce WINDOW_ID_NONE (200ms) to ignore transient focus loss during PiP close or window transitions
+      if (blurDebounceTimer) clearTimeout(blurDebounceTimer);
+      blurDebounceTimer = setTimeout(async () => {
+        blurDebounceTimer = null;
+        try {
+          let tabs = [];
+          if (lastFocusedWindowId != null) {
+            tabs = await api.tabs.query({ active: true, windowId: lastFocusedWindowId }).catch(() => []);
+          }
+          if (!tabs || tabs.length === 0) {
+            tabs = await api.tabs.query({ active: true }).catch(() => []);
+          }
+          if (tabs && tabs.length > 0) {
+            for (const tab of tabs) {
+              if (tab.id != null) {
+                api.tabs.sendMessage(tab.id, { type: 'cv-window-blur' }).catch(() => {});
+              }
+            }
+          }
+        } catch (_) {}
+      }, 200);
+    } else {
+      // A Brave window is focused: cancel any pending blur
+      if (blurDebounceTimer) {
+        clearTimeout(blurDebounceTimer);
+        blurDebounceTimer = null;
+      }
+
+      const prevWinId = lastFocusedWindowId;
+      lastFocusedWindowId = windowId;
+
+      // If focus changed from one Brave window to another:
+      if (prevWinId != null && prevWinId !== windowId) {
+        api.tabs.query({ active: true, windowId: prevWinId }).then((oldTabs) => {
+          if (oldTabs && oldTabs.length > 0) {
+            for (const tab of oldTabs) {
+              if (tab.id != null) {
+                api.tabs.sendMessage(tab.id, { type: 'cv-window-blur' }).catch(() => {});
+              }
+            }
+          }
+        }).catch(() => {});
+      }
+
+      // Notify the active tab of the newly focused window that it regained focus
+      api.tabs.query({ active: true, windowId }).then((newTabs) => {
+        if (newTabs && newTabs.length > 0) {
+          for (const tab of newTabs) {
+            if (tab.id != null) {
+              api.tabs.sendMessage(tab.id, { type: 'cv-window-focus' }).catch(() => {});
+            }
+          }
+        }
+      }).catch(() => {});
+    }
+  });
+
+  if (api.windows.onRemoved) {
+    api.windows.onRemoved.addListener((windowId) => {
+      if (lastFocusedWindowId === windowId) {
+        lastFocusedWindowId = null;
+      }
+      lastActiveTabByWindow.delete(windowId);
+    });
+  }
+}
+
+if (api.tabs && api.tabs.onActivated) {
+  api.tabs.onActivated.addListener(async (activeInfo) => {
+    try {
+      if (activeInfo && activeInfo.windowId != null) {
+        lastFocusedWindowId = activeInfo.windowId;
+      }
+      const prevTabId = lastActiveTabByWindow.get(activeInfo.windowId);
+      lastActiveTabByWindow.set(activeInfo.windowId, activeInfo.tabId);
+      if (prevTabId != null && prevTabId !== activeInfo.tabId) {
+        api.tabs.sendMessage(prevTabId, { type: 'cv-tab-deactivated' }).catch(() => {});
+      }
+      api.tabs.sendMessage(activeInfo.tabId, { type: 'cv-tab-activated' }).catch(() => {});
+    } catch (_) {}
   });
 }
 
@@ -529,6 +636,18 @@ if (api.commands && api.commands.onCommand) {
         await injectSpeedAdjustment(tabId, -0.25, null);
       } else if (command === 'speed-reset') {
         await injectSpeedAdjustment(tabId, null, 1.0);
+      } else if (command === 'toggle-pip') {
+        try {
+          const res = await api.tabs.sendMessage(tabId, { type: 'toggle-pip' }).catch(() => null);
+          if (!res || res.result === 'none') {
+            await api.scripting.executeScript({
+              target: { tabId, allFrames: true },
+              func: () => {
+                if (window.__cvPip) return window.__cvPip.toggle();
+              }
+            }).catch(() => {});
+          }
+        } catch (_) {}
       }
     } catch (_) {}
   });
@@ -539,6 +658,14 @@ api.runtime.onStartup.addListener(() => {
   checkGithubUpdate(false);
 });
 
-api.runtime.onInstalled.addListener(() => {
+api.runtime.onInstalled.addListener(async () => {
   checkGithubUpdate(false);
+  try {
+    const s = await api.storage.sync.get({ autoPip: true });
+    await api.storage.sync.set(s);
+  } catch (_) {}
+  try {
+    const l = await api.storage.local.get({ rememberVol: true, autoPip: true });
+    await api.storage.local.set(l);
+  } catch (_) {}
 });

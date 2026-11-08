@@ -97,6 +97,17 @@
       </div>
       <input type="checkbox" id="rememberVol" checked>
     </label>
+
+    <div class="setting-divider"></div>
+
+    <!-- Picture-in-Picture automatico -->
+    <label class="setting-row">
+      <div class="setting-text">
+        <span class="setting-title" data-i18n="settingPip">Picture-in-Picture automatico</span>
+        <span class="setting-desc" data-i18n="settingPipDesc">Attiva automaticamente il video in PiP quando cambi scheda o riduci a icona</span>
+      </div>
+      <input type="checkbox" id="autoPip" checked>
+    </label>
   </div>
 
   <!-- Settings footer -->
@@ -112,7 +123,7 @@
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
       </button>
-      <span class="ver-pill">v1.2.1</span>
+      <span class="ver-pill">v1.3.0</span>
     </div>
   </div>
 </div>
@@ -150,10 +161,11 @@
       <span style="--f:.8">400%</span>
       <span style="--f:1">500%</span>
     </div>
-    <!-- Volume chips: 50%, 100%, 300%, 500% -->
+    <!-- Volume chips: 50%, 100%, 150%, 300%, 500% -->
     <div class="chips vol-grid" id="volChips">
       <button type="button" data-v="50">50%</button>
       <button type="button" data-v="100">100%</button>
+      <button type="button" data-v="150">150%</button>
       <button type="button" data-v="300">300%</button>
       <button type="button" data-v="500">500%</button>
     </div>
@@ -190,10 +202,11 @@
       </div>
       <output id="spdOut" for="spd">1×</output>
     </div>
-    <!-- Speed preset buttons: "0,5", "1", "1,5", "2" -->
+    <!-- Speed preset buttons: "0,25×", "1×", "1,25×", "1,5×", "2×" -->
     <div class="chips speed-grid" id="spdChips">
-      <button type="button" data-v="50">0,5×</button>
+      <button type="button" data-v="25">0,25×</button>
       <button type="button" data-v="100">1×</button>
+      <button type="button" data-v="125">1,25×</button>
       <button type="button" data-v="150">1,5×</button>
       <button type="button" data-v="200">2×</button>
     </div>

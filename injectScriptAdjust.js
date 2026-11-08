@@ -1,6 +1,6 @@
 /**
  * injectScriptAdjust.js - Browser Extension Injection & Speed Control Script
- * Version: 1.2.1
+ * Version: 1.3.0
  * 
  * 1. Scope correction: safeDispatch targeting window.dispatchEvent with fallback to globalThis / self.
  * 2. Total bypass of media/streaming chunks in XMLHttpRequest and Fetch to prevent ERR_QUIC_PROTOCOL_ERROR.
@@ -479,11 +479,26 @@
             });
           }
         } catch (_) {}
+
+        try {
+          if (!window.__cvPitchPatched) {
+            window.__cvPitchPatched = true;
+            Object.defineProperty(HTMLMediaElement.prototype, "preservesPitch", {
+              configurable: true,
+              enumerable: true,
+              get() { return true; },
+              set(_) {}
+            });
+          }
+        } catch (_) {}
       }
 
       function applySpeed(el, val) {
         try {
           el.__cvSetting = true;
+          el.preservesPitch = true;
+          if ('mozPreservesPitch' in el) el.mozPreservesPitch = true;
+          if ('webkitPreservesPitch' in el) el.webkitPreservesPitch = true;
           if (window.__cvOrigRateSet) {
             window.__cvOrigRateSet.call(el, val);
           } else {
@@ -538,7 +553,9 @@
               if (el.__cvSetting) return;
               const tr = window.__cvRate;
               if (typeof tr === "number" && Math.abs(el.playbackRate - tr) > 0.01) {
-                e.stopImmediatePropagation();
+                if (!location.hostname.includes("youtube.com")) {
+                  e.stopImmediatePropagation();
+                }
                 if (!timer) {
                   timer = setTimeout(() => {
                     timer = null;
@@ -553,10 +570,12 @@
         try {
           const yt = document.getElementById("movie_player") || document.querySelector(".html5-video-player");
           if (yt && typeof yt.setPlaybackRate === "function") {
-            if (typeof yt.getPlaybackRate === "function") {
-              if (Math.abs(yt.getPlaybackRate() - rate) > 0.01) yt.setPlaybackRate(rate);
-            } else {
-              yt.setPlaybackRate(rate);
+            if (rate <= 2.0) {
+              if (typeof yt.getPlaybackRate === "function") {
+                if (Math.abs(yt.getPlaybackRate() - rate) > 0.01) yt.setPlaybackRate(rate);
+              } else {
+                yt.setPlaybackRate(rate);
+              }
             }
           }
         } catch (_) {}

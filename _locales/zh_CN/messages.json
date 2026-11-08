@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "音量增强高达 500% 及视频播放速度控制。"
+    "message": "音量增强高达 500%、视频播放速度控制及自动画中画。"
   },
   "volume": {
     "message": "音量"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "在浏览时为每个标签页保持音量级别"
   },
+  "settingPip": {
+    "message": "自动画中画"
+  },
+  "settingPipDesc": {
+    "message": "切换标签页或最小化时自动将视频切换为画中画"
+  },
   "settingLanguage": {
     "message": "语言"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "速度：重置为 1×"
+  },
+  "cmdTogglePip": {
+    "message": "画中画: 切换悬浮窗口"
   },
   "homeTitle": {
     "message": "主页"

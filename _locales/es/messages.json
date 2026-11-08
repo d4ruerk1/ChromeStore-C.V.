@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "Refuerzo de volumen hasta 500% y velocidad de vídeo."
+    "message": "Refuerzo de volumen hasta 500%, velocidad de vídeo y Picture-in-Picture automático."
   },
   "volume": {
     "message": "Volumen"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Mantiene el nivel de volumen al navegar entre páginas"
   },
+  "settingPip": {
+    "message": "Picture-in-Picture automático"
+  },
+  "settingPipDesc": {
+    "message": "Activa automáticamente el vídeo en PiP al cambiar de pestaña o minimizar"
+  },
   "settingLanguage": {
     "message": "Idioma"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "Velocidad: Restablecer a 1×"
+  },
+  "cmdTogglePip": {
+    "message": "Picture-in-Picture: Activar/desactivar ventana flotante"
   },
   "homeTitle": {
     "message": "Inicio"

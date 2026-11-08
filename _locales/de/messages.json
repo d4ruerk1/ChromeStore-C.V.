@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "Lautstärke-Boost bis 500 % und Video-Tempo."
+    "message": "Lautstärke-Boost bis 500 %, Video-Tempo und automatisches Bild-in-Bild."
   },
   "volume": {
     "message": "Volume"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Behält Lautstärke beim Seitenwechsel bei"
   },
+  "settingPip": {
+    "message": "Automatisches Bild-in-Bild"
+  },
+  "settingPipDesc": {
+    "message": "Video automatisch im PiP öffnen beim Tab-Wechsel oder Minimieren"
+  },
   "settingLanguage": {
     "message": "Sprache"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "Tempo: Auf 1× zurücksetzen"
+  },
+  "cmdTogglePip": {
+    "message": "Bild-in-Bild: Schwebendes Fenster umschalten"
   },
   "homeTitle": {
     "message": "Startseite"

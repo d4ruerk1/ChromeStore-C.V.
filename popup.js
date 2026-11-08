@@ -184,8 +184,18 @@ function pageApplyVolume(volVal, isCaptured) {
     }
   } catch (_) {}
 
-  // 3. In-page Web Audio fallback with automatic balancing filters if tabCapture is not active and v > 100
-  if (!isCaptured && v > 100) {
+  // 3. In-page audio handling: neutral when <= 100% or captured, transparent limiter if uncaptured boost
+  if (v <= 100 || isCaptured) {
+    try {
+      if (window.__cvAudioCtx) {
+        for (let i = 0; i < media.length; i++) {
+          if (media[i].__cvGain) {
+            media[i].__cvGain.gain.setValueAtTime(1.0, window.__cvAudioCtx.currentTime);
+          }
+        }
+      }
+    } catch (_) {}
+  } else if (!isCaptured && v > 100) {
     const boost = v / 100;
     try {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -199,31 +209,17 @@ function pageApplyVolume(volVal, isCaptured) {
           if (!el.__cvSource) {
             try {
               el.__cvSource = ctx.createMediaElementSource(el);
-
-              // High-pass filter (80 Hz) to cut sub-bass rattle
-              el.__cvHp = ctx.createBiquadFilter();
-              el.__cvHp.type = 'highpass';
-              el.__cvHp.frequency.value = 80;
-
-              // Clarity EQ (2.5 kHz) for voice presence
-              el.__cvEq = ctx.createBiquadFilter();
-              el.__cvEq.type = 'peaking';
-              el.__cvEq.frequency.value = 2500;
-              el.__cvEq.gain.value = 2.0;
-
               el.__cvGain = ctx.createGain();
 
-              // Smooth automatic dynamics compressor
+              // Clean transparent dynamics limiter
               el.__cvLimiter = ctx.createDynamicsCompressor();
-              el.__cvLimiter.threshold.value = -6;
+              el.__cvLimiter.threshold.value = -2.0;
               el.__cvLimiter.knee.value = 12;
-              el.__cvLimiter.ratio.value = 3.5;
-              el.__cvLimiter.attack.value = 0.003;
-              el.__cvLimiter.release.value = 0.18;
+              el.__cvLimiter.ratio.value = 20;
+              el.__cvLimiter.attack.value = 0.002;
+              el.__cvLimiter.release.value = 0.06;
 
-              el.__cvSource.connect(el.__cvHp);
-              el.__cvHp.connect(el.__cvEq);
-              el.__cvEq.connect(el.__cvGain);
+              el.__cvSource.connect(el.__cvGain);
               el.__cvGain.connect(el.__cvLimiter);
               el.__cvLimiter.connect(ctx.destination);
             } catch (_) {}
@@ -234,17 +230,6 @@ function pageApplyVolume(volVal, isCaptured) {
             } catch (_) {
               try { el.__cvGain.gain.value = boost; } catch (_) {}
             }
-          }
-        }
-      }
-    } catch (_) {}
-  } else if (isCaptured) {
-    // Keep in-page gain neutral (1.0) when tabCapture is active to avoid double boost
-    try {
-      if (window.__cvAudioCtx) {
-        for (let i = 0; i < media.length; i++) {
-          if (media[i].__cvGain) {
-            media[i].__cvGain.gain.setTargetAtTime(1.0, window.__cvAudioCtx.currentTime, 0.015);
           }
         }
       }
@@ -304,11 +289,26 @@ function pageApplyRate(rate) {
         });
       }
     } catch (_) {}
+
+    try {
+      if (!window.__cvPitchPatched) {
+        window.__cvPitchPatched = true;
+        Object.defineProperty(HTMLMediaElement.prototype, 'preservesPitch', {
+          configurable: true,
+          enumerable: true,
+          get() { return true; },
+          set(_) {}
+        });
+      }
+    } catch (_) {}
   }
 
   function applySpeed(el, val) {
     try {
       el.__cvSetting = true;
+      el.preservesPitch = true;
+      if ('mozPreservesPitch' in el) el.mozPreservesPitch = true;
+      if ('webkitPreservesPitch' in el) el.webkitPreservesPitch = true;
       if (window.__cvOrigRateSet) {
         window.__cvOrigRateSet.call(el, val);
       } else {
@@ -355,7 +355,9 @@ function pageApplyRate(rate) {
         if (media[i].__cvSetting) return;
         const tr = window.__cvRate;
         if (typeof tr === 'number' && Math.abs(media[i].playbackRate - tr) > 0.01) {
-          e.stopImmediatePropagation();
+          if (!location.hostname.includes('youtube.com')) {
+            e.stopImmediatePropagation();
+          }
           if (!timer) {
             timer = setTimeout(() => {
               timer = null;
@@ -370,10 +372,12 @@ function pageApplyRate(rate) {
   try {
     const yt = document.getElementById('movie_player') || document.querySelector('.html5-video-player');
     if (yt && typeof yt.setPlaybackRate === 'function') {
-      if (typeof yt.getPlaybackRate === 'function') {
-        if (Math.abs(yt.getPlaybackRate() - rate) > 0.01) yt.setPlaybackRate(rate);
-      } else {
-        yt.setPlaybackRate(rate);
+      if (rate <= 2.0) {
+        if (typeof yt.getPlaybackRate === 'function') {
+          if (Math.abs(yt.getPlaybackRate() - rate) > 0.01) yt.setPlaybackRate(rate);
+        } else {
+          yt.setPlaybackRate(rate);
+        }
       }
     }
   } catch (_) {}
@@ -532,6 +536,22 @@ if (rememberCheckbox) {
   }).catch(() => {});
   rememberCheckbox.addEventListener('change', () => {
     api.storage.local.set({ rememberVol: rememberCheckbox.checked }).catch(() => {});
+  });
+}
+
+const autoPipCheckbox = $('autoPip');
+if (autoPipCheckbox) {
+  api.storage.sync.get({ autoPip: true }).then((data) => {
+    autoPipCheckbox.checked = data.autoPip !== false;
+  }).catch(() => {
+    api.storage.local.get({ autoPip: true }).then((data) => {
+      autoPipCheckbox.checked = data.autoPip !== false;
+    }).catch(() => {});
+  });
+  autoPipCheckbox.addEventListener('change', () => {
+    const enabled = autoPipCheckbox.checked;
+    api.storage.sync.set({ autoPip: enabled }).catch(() => {});
+    api.storage.local.set({ autoPip: enabled }).catch(() => {});
   });
 }
 
@@ -701,7 +721,7 @@ const sendVol = coalesce(async ({ v, final }) => {
   if (v > 100 && !streamId) {
     streamId = await requestStreamId(tabId);
     if (streamId) currentStreamId = streamId;
-  } else if (v === 100 && final) {
+  } else if (v <= 100) {
     currentStreamId = null;
   }
 

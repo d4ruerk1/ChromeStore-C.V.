@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "Boost de volume jusqu'à 500 % et vitesse vidéo."
+    "message": "Boost de volume jusqu'à 500 %, vitesse vidéo et Picture-in-Picture automatique."
   },
   "volume": {
     "message": "Volume"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Conserve le volume lors de la navigation"
   },
+  "settingPip": {
+    "message": "Picture-in-Picture automatique"
+  },
+  "settingPipDesc": {
+    "message": "Active automatiquement la vidéo en PiP lors du changement d'onglet ou de la réduction"
+  },
   "settingLanguage": {
     "message": "Langue"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "Vitesse : Réinitialiser à 1×"
+  },
+  "cmdTogglePip": {
+    "message": "Picture-in-Picture : Activer/désactiver la fenêtre flottante"
   },
   "homeTitle": {
     "message": "Accueil"

@@ -3,28 +3,6 @@ const api = (typeof browser !== 'undefined' && browser.runtime) ? browser : chro
 
 const tabs = new Map();
 let ctx = null;
-let clipperCurve = null;
-
-// Precompute smooth soft-clipping curve (100% linear up to 0.85, smooth tanh saturation up to 1.0)
-function getClipperCurve() {
-  if (clipperCurve) return clipperCurve;
-  const n = 4096;
-  const curve = new Float32Array(n);
-  const threshold = 0.85;
-  const headroom = 1.0 - threshold;
-  for (let i = 0; i < n; i++) {
-    const x = (i * 2) / (n - 1) - 1; // [-1, 1]
-    const ax = Math.abs(x);
-    if (ax <= threshold) {
-      curve[i] = x;
-    } else {
-      const sign = x >= 0 ? 1 : -1;
-      curve[i] = sign * (threshold + headroom * Math.tanh((ax - threshold) / headroom));
-    }
-  }
-  clipperCurve = curve;
-  return curve;
-}
 
 function getContext() {
   if (!ctx) {
@@ -40,10 +18,8 @@ function stop(tabId) {
   try {
     t.src.disconnect();
     if (t.hp) t.hp.disconnect();
-    if (t.eq) t.eq.disconnect();
-    t.gain.disconnect();
-    t.lim.disconnect();
-    t.clipper.disconnect();
+    if (t.gain) t.gain.disconnect();
+    if (t.lim) t.lim.disconnect();
   } catch (_) {}
   try {
     t.stream.getTracks().forEach((tr) => tr.stop());
@@ -59,8 +35,8 @@ function setGain(t, g) {
   if (audioCtx.state === 'suspended') {
     audioCtx.resume().catch(() => {});
   }
-  // Allow smooth boost up to 500% (5.0)
-  const clampedGain = Math.max(0, Math.min(5, g));
+  // Allow clean boost up to 500% (5.0)
+  const clampedGain = Math.max(1.0, Math.min(5.0, g));
   t.gain.gain.setTargetAtTime(clampedGain, audioCtx.currentTime, 0.015);
 }
 
@@ -69,7 +45,7 @@ async function start(tabId, streamId, g) {
 
   let stream;
   try {
-    // Disable APM (echoCancellation, noiseSuppression, autoGainControl)
+    // Disable Chromium APM (echoCancellation, noiseSuppression, autoGainControl)
     // so Chromium does not alter tab audio or burn CPU
     stream = await navigator.mediaDevices.getUserMedia({
       audio: {
@@ -110,44 +86,31 @@ async function start(tabId, streamId, g) {
 
   const src = audioCtx.createMediaStreamSource(stream);
 
-  // 1. High-Pass Filter: Cuts inaudible sub-bass below 80 Hz that causes speaker crackle/rattle when boosted
+  // 1. High-Pass Filter: Cuts inaudible sub-bass below 30 Hz to eliminate DC offset and sub-rumble without thinning audio
   const hp = audioCtx.createBiquadFilter();
   hp.type = 'highpass';
-  hp.frequency.value = 80;
-  hp.Q.value = 0.707;
+  hp.frequency.value = 30;
+  hp.Q.value = 0.5;
 
-  // 2. Clarity & Presence EQ: Balances voice and high mids at 2.5 kHz
-  const eq = audioCtx.createBiquadFilter();
-  eq.type = 'peaking';
-  eq.frequency.value = 2500;
-  eq.Q.value = 1.0;
-  eq.gain.value = 2.0;
-
-  // 3. Gain Node (volume multiplier from 0.0 to 5.0)
+  // 2. Gain Node (volume multiplier from 1.0 to 5.0)
   const gain = audioCtx.createGain();
-  gain.gain.value = Math.max(0, Math.min(5, g));
+  gain.gain.value = Math.max(1.0, Math.min(5.0, g));
 
-  // 4. Dynamics Compressor (AGC): Catches peaks smoothly with soft knee
+  // 3. Transparent Brickwall Limiter:
+  // Catches boosted signal peaks transparently without harsh saturation distortion or muffled transients
   const lim = audioCtx.createDynamicsCompressor();
-  lim.threshold.value = -6;
+  lim.threshold.value = -2.0;
   lim.knee.value = 12;
-  lim.ratio.value = 3.5;
-  lim.attack.value = 0.003;
-  lim.release.value = 0.18;
-
-  // 5. Anti-Clipping Soft-Saturator (tanh curve smoothly rounding peaks above 0.85)
-  const clipper = audioCtx.createWaveShaper();
-  clipper.curve = getClipperCurve();
-  clipper.oversample = '2x';
+  lim.ratio.value = 20;
+  lim.attack.value = 0.002;
+  lim.release.value = 0.06;
 
   src.connect(hp);
-  hp.connect(eq);
-  eq.connect(gain);
+  hp.connect(gain);
   gain.connect(lim);
-  lim.connect(clipper);
-  clipper.connect(audioCtx.destination);
+  lim.connect(audioCtx.destination);
 
-  tabs.set(tabId, { stream, src, hp, eq, gain, lim, clipper });
+  tabs.set(tabId, { stream, src, hp, gain, lim });
 
   const track = stream.getAudioTracks()[0];
   if (track) {

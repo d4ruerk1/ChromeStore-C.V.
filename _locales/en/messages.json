@@ -3,7 +3,7 @@
     "message": "C.V."
   },
   "extDescription": {
-    "message": "Volume boost up to 500% and video speed control."
+    "message": "Volume boost up to 500%, video speed control, and automatic Picture-in-Picture."
   },
   "volume": {
     "message": "Volume"
@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Keeps volume level across tab navigation"
   },
+  "settingPip": {
+    "message": "Automatic Picture-in-Picture"
+  },
+  "settingPipDesc": {
+    "message": "Automatically switch video to PiP when switching tabs or minimizing"
+  },
   "settingLanguage": {
     "message": "Language"
   },
@@ -73,6 +79,9 @@
   },
   "cmdSpeedReset": {
     "message": "Speed: Reset to 1×"
+  },
+  "cmdTogglePip": {
+    "message": "Picture-in-Picture: Toggle floating window"
   },
   "homeTitle": {
     "message": "Home"
