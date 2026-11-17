@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Conserve le volume lors de la navigation"
   },
+  "settingSpeechClarity": {
+    "message": "Clarté vocale à haute vitesse"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "Optimise les fréquences et les consonnes à grande vitesse (jusqu'à 5×) pour distinguer nettement les paroles et les sons"
+  },
   "settingPip": {
     "message": "Picture-in-Picture automatique"
   },

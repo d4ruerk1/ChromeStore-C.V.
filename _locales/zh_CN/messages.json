@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "在浏览时为每个标签页保持音量级别"
   },
+  "settingSpeechClarity": {
+    "message": "高速语音清晰度"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "优化高倍速（最高5×）下的音频频率与辅音，清晰分辨每一个单词和声音"
+  },
   "settingPip": {
     "message": "自动画中画"
   },

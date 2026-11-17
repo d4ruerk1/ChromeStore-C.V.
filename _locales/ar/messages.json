@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "يحافظ على مستوى الصوت لكل علامة تبويب أثناء التصفح"
   },
+  "settingSpeechClarity": {
+    "message": "وضوح الصوت عند السرعات العالية"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "تحسين الترددات والحروف الساكنة عند السرعات العالية (حتى 5×) لتمييز الكلمات والأصوات بوضوح"
+  },
   "settingPip": {
     "message": "صورة داخل صورة تلقائي"
   },

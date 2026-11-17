@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "ナビゲーション中もタブごとの音量レベルを保持します"
   },
+  "settingSpeechClarity": {
+    "message": "高速再生時の音声明瞭化"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "高速再生（最大5倍）時に周波数と子音を最適化し、言葉や音声を鮮明に聞き取りやすくします"
+  },
   "settingPip": {
     "message": "自動ピクチャー・イン・ピクチャー"
   },

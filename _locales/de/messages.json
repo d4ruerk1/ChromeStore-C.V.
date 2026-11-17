@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Behält Lautstärke beim Seitenwechsel bei"
   },
+  "settingSpeechClarity": {
+    "message": "Sprachklarheit bei hoher Geschwindigkeit"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "Optimiert Frequenzen und Konsonanten bei hohen Geschwindigkeiten (bis zu 5×) für deutliche Sprachverständlichkeit"
+  },
   "settingPip": {
     "message": "Automatisches Bild-in-Bild"
   },

@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Keeps volume level across tab navigation"
   },
+  "settingSpeechClarity": {
+    "message": "High-speed voice clarity"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "Optimizes frequencies and vocal consonants at high speeds (up to 5×) to clearly distinguish words and sounds"
+  },
   "settingPip": {
     "message": "Automatic Picture-in-Picture"
   },

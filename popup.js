@@ -1,4 +1,9 @@
-function __cvScan(d){const l=[];if(!d)return l;try{const m=d.querySelectorAll("video, audio");for(let i=0;i<m.length;i++)l.push(m[i]);const f=d.querySelectorAll("iframe");for(let j=0;j<f.length;j++){try{if(f[j].contentDocument)l.push(...__cvScan(f[j].contentDocument));}catch(_){}}}catch(_){}return l;} 'use strict';
+'use strict';
+/**
+ * C.V. - Popup Script
+ * Audio Boost, Speed Control & Settings Controller
+ * Version: 1.3.1
+ */
 
 // Cross-browser API shim
 const api = (typeof browser !== 'undefined' && browser.runtime) ? browser : chrome;
@@ -84,6 +89,24 @@ const tabReadyPromise = (async () => {
   }
   return tab;
 })();
+
+// Notify active tab that the extension menu (popup) is open to prevent accidental Auto-PiP triggers
+const notifyPopupState = (open) => {
+  if (tabId != null) {
+    api.tabs.sendMessage(tabId, { type: 'cv-popup-state', open }).catch(() => {});
+  }
+  api.runtime.sendMessage({ type: 'cv-popup-state', tabId, open }).catch(() => {});
+};
+
+tabReadyPromise.then((tab) => {
+  if (tab && tab.id != null) {
+    notifyPopupState(true);
+  }
+});
+
+window.addEventListener('pagehide', () => {
+  notifyPopupState(false);
+});
 
 let currentStreamId = null;
 
@@ -184,59 +207,7 @@ function pageApplyVolume(volVal, isCaptured) {
     }
   } catch (_) {}
 
-  // 3. In-page audio handling: neutral when <= 100% or captured, transparent limiter if uncaptured boost
-  if (v <= 100 || isCaptured) {
-    try {
-      if (window.__cvAudioCtx) {
-        for (let i = 0; i < media.length; i++) {
-          if (media[i].__cvGain) {
-            media[i].__cvGain.gain.setValueAtTime(1.0, window.__cvAudioCtx.currentTime);
-          }
-        }
-      }
-    } catch (_) {}
-  } else if (!isCaptured && v > 100) {
-    const boost = v / 100;
-    try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (AudioContextClass) {
-        window.__cvAudioCtx = window.__cvAudioCtx || new AudioContextClass();
-        const ctx = window.__cvAudioCtx;
-        if (ctx.state === 'suspended') ctx.resume().catch(() => {});
-
-        for (let i = 0; i < media.length; i++) {
-          const el = media[i];
-          if (!el.__cvSource) {
-            try {
-              el.__cvSource = ctx.createMediaElementSource(el);
-              el.__cvGain = ctx.createGain();
-
-              // Clean transparent dynamics limiter
-              el.__cvLimiter = ctx.createDynamicsCompressor();
-              el.__cvLimiter.threshold.value = -2.0;
-              el.__cvLimiter.knee.value = 12;
-              el.__cvLimiter.ratio.value = 20;
-              el.__cvLimiter.attack.value = 0.002;
-              el.__cvLimiter.release.value = 0.06;
-
-              el.__cvSource.connect(el.__cvGain);
-              el.__cvGain.connect(el.__cvLimiter);
-              el.__cvLimiter.connect(ctx.destination);
-            } catch (_) {}
-          }
-          if (el.__cvGain) {
-            try {
-              el.__cvGain.gain.setTargetAtTime(boost, ctx.currentTime, 0.015);
-            } catch (_) {
-              try { el.__cvGain.gain.value = boost; } catch (_) {}
-            }
-          }
-        }
-      }
-    } catch (_) {}
-  }
-
-  // Auto-enforce volume on newly loaded or playing videos
+  // Auto-enforce volume on newly loaded or playing videos without Web Audio hooks
   window.__cvTargetVol = v;
   window.__cvIsCaptured = isCaptured;
   if (!window.__cvVolEnforcer) {
@@ -254,8 +225,8 @@ function pageApplyVolume(volVal, isCaptured) {
         }
       }
     };
-    ['play', 'playing', 'loadedmetadata'].forEach((ev) => {
-      document.addEventListener(ev, reapply, true);
+    ['play', 'loadedmetadata'].forEach((ev) => {
+      window.addEventListener(ev, reapply, true);
     });
   }
 
@@ -293,11 +264,15 @@ function pageApplyRate(rate) {
     try {
       if (!window.__cvPitchPatched) {
         window.__cvPitchPatched = true;
-        Object.defineProperty(HTMLMediaElement.prototype, 'preservesPitch', {
-          configurable: true,
-          enumerable: true,
-          get() { return true; },
-          set(_) {}
+        ['preservesPitch', 'mozPreservesPitch', 'webkitPreservesPitch'].forEach((prop) => {
+          try {
+            Object.defineProperty(HTMLMediaElement.prototype, prop, {
+              configurable: true,
+              enumerable: true,
+              get() { return true; },
+              set(_) {}
+            });
+          } catch (_) {}
         });
       }
     } catch (_) {}
@@ -355,14 +330,12 @@ function pageApplyRate(rate) {
         if (media[i].__cvSetting) return;
         const tr = window.__cvRate;
         if (typeof tr === 'number' && Math.abs(media[i].playbackRate - tr) > 0.01) {
-          if (!location.hostname.includes('youtube.com')) {
-            e.stopImmediatePropagation();
-          }
+          e.stopImmediatePropagation();
           if (!timer) {
             timer = setTimeout(() => {
               timer = null;
               applySpeed(media[i], window.__cvRate);
-            }, 300);
+            }, 150);
           }
         }
       }, true);
@@ -538,6 +511,10 @@ if (rememberCheckbox) {
     api.storage.local.set({ rememberVol: rememberCheckbox.checked }).catch(() => {});
   });
 }
+
+// Speech clarity is permanently active in background/offscreen
+api.storage.local.set({ speechClarity: true }).catch(() => {});
+api.storage.sync.set({ speechClarity: true }).catch(() => {});
 
 const autoPipCheckbox = $('autoPip');
 if (autoPipCheckbox) {
@@ -811,8 +788,12 @@ function showSpd(p) {
 }
 
 const sendSpdImmediate = coalesce(async (p) => {
+  const rate = p / 100;
+  if (tabId != null) {
+    api.runtime.sendMessage({ type: 'setSpeed', tabId, speed: rate }).catch(() => {});
+  }
   try {
-    const res = await exec(pageApplyRate, [p / 100]);
+    const res = await exec(pageApplyRate, [rate]);
     const n = res.reduce((a, x) => a + (x.result || 0), 0);
     note($('spdNote'), n ? '' : t('noMedia'));
   } catch (_) {

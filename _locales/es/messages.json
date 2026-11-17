@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Mantiene el nivel de volumen al navegar entre páginas"
   },
+  "settingSpeechClarity": {
+    "message": "Claridad de voz a alta velocidad"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "Optimiza frecuencias y consonantes a velocidades elevadas (hasta 5×) para distinguir nítidamente palabras y sonidos"
+  },
   "settingPip": {
     "message": "Picture-in-Picture automático"
   },

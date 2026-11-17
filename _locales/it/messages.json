@@ -44,6 +44,12 @@
   "settingRememberDesc": {
     "message": "Mantiene il livello per ogni scheda durante la navigazione"
   },
+  "settingSpeechClarity": {
+    "message": "Chiarezza vocale ad alta velocità"
+  },
+  "settingSpeechClarityDesc": {
+    "message": "Ottimizza frequenze e consonanti a velocità elevate (fino a 5×) per distinguere nitidamente parole e suoni"
+  },
   "settingPip": {
     "message": "Picture-in-Picture automatico"
   },
